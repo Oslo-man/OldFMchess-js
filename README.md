@@ -2,7 +2,7 @@
 
 Play it here: https://oldfmchess-js.vercel.app/
 
-## Tutorial
+## Tutorial to run
 
 ## Run
 
