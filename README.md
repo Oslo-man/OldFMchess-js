@@ -2,6 +2,8 @@
 
 Play it here: https://oldfmchess-js.vercel.app/
 
+## Tutorial
+
 ## Run
 
 Install Node.js first.
@@ -41,3 +43,7 @@ Further modified and developed by Marcell Wang.
 - Added pawn structure evaluation
 - Added 2 strength levels
 - Redesigned UI
+- Merge material updating with PST values
+- Put move scoring inline in generator
+- Remove need for fliptable in PST tables. Access them by color
+- Optimize pawn move generation
