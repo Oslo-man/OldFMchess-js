@@ -1,6 +1,6 @@
 # OldFMchess-js
 
-##ja
+Play it here: https://oldfmchess-js.vercel.app/
 
 ## Run
 
