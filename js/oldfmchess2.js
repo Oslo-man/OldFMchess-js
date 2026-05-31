@@ -1,17 +1,5 @@
 "use strict";
 
-// Perf TODO:
-// Merge material updating with psq values
-// Put move scoring inline in generator
-// Remove need for fliptable in psq tables.  Access them by color
-// Optimize pawn move generation
-
-// Non-perf todo:
-// Checks in first q?
-// Pawn eval.
-// Better king evaluation
-// Better move sorting in PV nodes (especially root)
-
 var g_debug = true;
 var g_timeout = 40;
 
