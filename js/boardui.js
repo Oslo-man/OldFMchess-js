@@ -21,9 +21,9 @@ var g_engineFiles = {
 
 // Engine name & sub info per level
 var g_engineInfo = {
-    1: { name: "FM drunk", sub: "(1200+ Elo)" },
-    2: { name: "FM Training", sub: "(1900+ Elo)" },
-    3: { name: "FM Serious",  sub: "FM Classic (2300+ Elo)" }
+    1: { name: "Fahri tidak fokus", sub: "Fahri (1200+ Elo)" },
+    2: { name: "Fahri mengajar", sub: "Fahri (1900+ Elo)" },
+    3: { name: "Fahri serius",  sub: "Fahri (2200+ Elo)" }
 };
 
 // Board cell size calculated dynamically from screen width
@@ -51,16 +51,26 @@ function UIChangeLevel() {
     UINewGame();
 }
 
+// ── CHANGE MODE (called from dropdown) ───────────────────────────────────────
+function UISetModeFromSelect() {
+    var sel = document.getElementById("ModeSelect");
+    UISetMode(sel.value);
+}
+
 // ── CHANGE MODE ───────────────────────────────────────────────────────────────
 function UISetMode(mode) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm("Apakah Anda yakin?")) {
+        // Revert select to current mode if user cancels
+        var sel = document.getElementById("ModeSelect");
+        if (sel) sel.value = g_mode;
+        return;
+    }
 
     g_mode = mode;
 
-    var btnF = document.getElementById('btnFriendly');
-    var btnC = document.getElementById('btnChallenge');
-    btnF.className = 'mode-btn' + (mode === 'friendly'  ? ' active-friendly'  : '');
-    btnC.className = 'mode-btn' + (mode === 'challenge' ? ' active-challenge' : '');
+    // Sync dropdown in case called programmatically
+    var sel = document.getElementById("ModeSelect");
+    if (sel) sel.value = mode;
 
     var evalBar   = document.getElementById('evalBarContainer');
     var btnUndo   = document.getElementById('btnUndo');
@@ -90,7 +100,7 @@ function UISetMode(mode) {
 
 // ── NEW GAME (from button, with confirmation) ─────────────────────────────────
 function UINewGameConfirm() {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm("Apakah Anda yakin?")) return;
     UINewGame();
 }
 
@@ -131,9 +141,9 @@ function UIAnalyzeToggle() {
             UpdateEvalBar(0);
         }
         g_analyzing = !g_analyzing;
-        document.getElementById("AnalysisToggleLink").innerText = g_analyzing ? "Analysis: On" : "Analysis: Off";
+        document.getElementById("AnalysisToggleLink").innerText = g_analyzing ? "Analisis: Hidup" : "Analisis: Mati";
     } else {
-        alert("Your browser must support web workers for analysis - (chrome4, ff4, safari)");
+        alert("Peramban Anda harus mendukung web workers untuk analisis - (chrome4, ff4, safari)");
     }
 }
 
@@ -182,7 +192,7 @@ function FinishMove(bestMove, value, timeTaken, ply) {
     if (bestMove != null) {
         UIPlayMove(bestMove, BuildPVMessage(bestMove, value, timeTaken, ply));
     } else {
-        alert("Checkmate!");
+        alert("Skakmat!");
     }
 }
 
@@ -305,7 +315,7 @@ function InitializeBackgroundEngine() {
                 }
             }
             g_backgroundEngine.error = function (e) {
-                alert("Error from background worker:" + e.message);
+                alert("Kesalahan dari background worker:" + e.message);
             }
             g_backgroundEngine.postMessage("position " + GetFen());
         } catch (error) {
