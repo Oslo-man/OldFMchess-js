@@ -21,8 +21,8 @@ var g_engineFiles = {
 
 // Engine name & sub info per level
 var g_engineInfo = {
-    1: { name: "Fahri tidak fokus", sub: "Fahri (1200+ Elo)" },
-    2: { name: "Fahri mengajar", sub: "Fahri (1900+ Elo)" },
+    1: { name: "Fahri mengajar", sub: "Fahri (1200+ Elo)" },
+    2: { name: "Fahri tidak fokus", sub: "Fahri (1900+ Elo)" },
     3: { name: "Fahri serius",  sub: "Fahri (2200+ Elo)" }
 };
 
