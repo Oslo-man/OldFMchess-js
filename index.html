@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>FIDE Classic Master Simulator</title>
+  <title>Simulasi melawan Fahri catur</title>
 
   <script type="text/javascript" src="js/jquery-min.js"></script>
   <script type="text/javascript" src="js/jquery-ui-custom.min.js"></script>
@@ -144,9 +144,10 @@
     .app-footer {
       width:100%; max-width:520px; padding:14px; background:#1a1816;
       text-align:center; border-top:1px solid #2c2825; margin-top:auto;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
     }
-    .footer-title   { font-size:12px; color:#f0d060; font-weight:700; font-style:italic; margin-bottom:5px; }
-    .footer-credits { font-size:11px; color:#5a5550; line-height:1.8; }
+    .footer-title   { font-size:14px; color:#f0d060; font-weight:700; font-style:italic; margin-bottom:8px; }
+    .footer-credits { font-size:11px; color:#5a5550; line-height:1.8; margin-top: 5px; }
     .footer-link    { color:#8aac60; text-decoration:none; font-size:12px; display:inline-block; margin-top:10px; }
 
     .sprite-bishop_black { background-position:0    0px;   width:45px; height:45px; }
@@ -193,32 +194,17 @@
     /* Board square colors: light squares become reddish, dark stay */
     body.mode-challenge .board-light { background-color: #e8b4a0 !important; }
     body.mode-challenge .board-dark  { background-color: #8b4040 !important; }
-    .mode-selector {
-      width: 100%; display: flex;
-      border-bottom: 1px solid #3e3a36;
-    }
-    .mode-btn {
-      flex: 1; padding: 10px 6px;
-      border: none; cursor: pointer;
-      font-size: 12px; font-weight: 700;
-      font-family: 'Georgia', serif;
-      letter-spacing: 0.3px;
-      transition: background 0.2s, color 0.2s;
-      background: #252220; color: #666;
-    }
-    .mode-btn.active-friendly   { background: #3a6b2a; color: #b8f08a; }
-    .mode-btn.active-challenge  { background: #6b2a2a; color: #f08a8a; }
-    .mode-btn:first-child { border-right: 1px solid #3e3a36; }
+    /* mode-selector replaced by level-selector style dropdown */
   </style>
 </head>
 
 <body>
 
   <header class="app-header">
-    <span class="app-title">♟ FIDE Classic Master Simulator</span>
+    <span class="app-title">♟ Simulasi melawan Fahri catur</span>
     <select class="header-select" onchange="UIChangeStartPlayer()">
-      <option value="white">Play White</option>
-      <option value="black">Play Black</option>
+      <option value="white">Main Putih</option>
+      <option value="black">Main Hitam</option>
     </select>
   </header>
 
@@ -237,20 +223,21 @@
 
     <!-- Level Selector -->
     <div class="level-selector">
-      <span class="level-label">⚙️ Level:</span>
+      <span class="level-label">⚙️ Tingkat:</span>
       <select id="LevelSelect" class="level-select" onchange="UIChangeLevel()">
-        <option value="3" selected>Level 3 — Serious (2300+ Elo)</option>
-        <option value="2">Level 2 — Training (1800+ Elo)</option>
-        <option value="1">Level 1 — Beginner (1200+ Elo)</option>
+        <option value="3" selected>Tingkat 3 — Fahri Serius (2300+ Elo)</option>
+        <option value="2">Tingkat 2 — Fahri Mengajar (1900+ Elo)</option>
+        <option value="1">Tingkat 1 — Fahri Tidak Fokus (1200+ Elo)</option>
       </select>
     </div>
 
     <!-- Mode Selector -->
-    <div class="mode-selector">
-      <button id="btnFriendly"   class="mode-btn active-friendly"
-              onclick="UISetMode('friendly')">🤝 Friendly Mode</button>
-      <button id="btnChallenge"  class="mode-btn"
-              onclick="UISetMode('challenge')">⚔️ Challenge Mode</button>
+    <div class="level-selector">
+      <span class="level-label"> Mode:</span>
+      <select id="ModeSelect" class="level-select" onchange="UISetModeFromSelect()">
+        <option value="friendly" selected> Dengan alat</option>
+        <option value="challenge"> Tanpa alat</option>
+      </select>
     </div>
 
     <!-- Board -->
@@ -267,49 +254,49 @@
     <div class="player-panel">
       <div class="player-avatar">👤</div>
       <div class="player-info">
-        <div class="player-name">You</div>
-        <div class="player-sub">Player</div>
+        <div class="player-name">Anda</div>
+        <div class="player-sub">Pemain</div>
       </div>
     </div>
 
     <!-- Status -->
     <div class="status-bar">
-      <span id="output">Enjoy your game…</span>
+      <span id="output">Selamat bermain…</span>
     </div>
 
     <!-- Controls -->
     <div class="controls-panel">
       <div class="controls-row">
-        <a href="javascript:UINewGameConfirm()" class="btn btn-green">🔄 New Game</a>
-        <a href="javascript:UIUndoMove()" id="btnUndo" class="btn btn-gray">↩ Undo</a>
-        <a id="AnalysisToggleLink" href="javascript:UIAnalyzeToggle()" class="btn btn-toggle">🔍 Analysis: Off</a>
+        <a href="javascript:UINewGameConfirm()" class="btn btn-green">Menyerah </a>
+        <a href="javascript:UIUndoMove()" id="btnUndo" class="btn btn-gray"> Batalkan</a>
+        <a id="AnalysisToggleLink" href="javascript:UIAnalyzeToggle()" class="btn btn-toggle"> Analisis: Mati</a>
       </div>
       <div class="input-row" id="timeRow">
-        <span class="input-label">⏱ Time per move:</span>
+        <span class="input-label">⏱ Waktu per gerakan:</span>
         <input id="TimePerMove" type="number" value="3000" onchange="UIChangeTimePerMove()" style="width:85px;" />
-        <span class="input-label">milliseconds</span>
+        <span class="input-label">milidetik</span>
       </div>
     </div>
 
     <!-- PGN -->
     <div class="pgn-section">
-      <div class="section-label">Move History (PGN)</div>
+      <div class="section-label">Riwayat Gerakan (PGN)</div>
       <textarea id="PgnTextBox" readonly></textarea>
     </div>
 
     <!-- FEN -->
     <div class="fen-section">
-      <div class="section-label">Board Position (FEN)</div>
+      <div class="section-label">Posisi Papan (FEN)</div>
       <input id="FenTextBox" type="text" onchange="UIChangeFEN()" />
     </div>
 
     <!-- Footer -->
     <div class="app-footer">
-      <div class="footer-title">FIDE Classic Master Player Simulator (1900s Era)</div>
+      <div class="footer-title">♟ Puzzle Kustom Fahri</div>
+      <a href="..\puzzles.html" class="btn btn-green" style="font-size: 14px; padding: 12px 20px; margin-bottom: 12px; display: inline-flex; width: auto;">Klik untuk bermain puzzle kustom</a>
       <div class="footer-credits">
-        Developed by &nbsp; Marcell Wang &nbsp;·&nbsp; 
+        Dikembangkan oleh &nbsp; Marcell Wang
       </div>
-      <a href="..\projects.html" class="footer-link">← Exit</a>
     </div>
 
   </div>
